@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @author.name %>
+</p>
+
+<p>
+  <strong>Books</strong>
+</p>
+<table>
+  <% @author.books.each do |book| %>
+  <thead>
+    <tr>
+      <th>Book ID</th>
+      <th>Description</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= book.id %></td>
+      <td><%= book.description %></td>
+      <td><%= book.price %></td>
+    </tr>
+  </tbody>
+  <% end %>
+</table>
+
+
+<%= link_to 'Edit', edit_author_path(@author) %> |
+<%= link_to 'Back', authors_path %>
+<%= link_to 'Books', books_path %>
