@@ -4,7 +4,15 @@ class AuthorsController < ApplicationController
   # GET /authors
   # GET /authors.json
   def index
-    @authors = Author.all
+    # @authors = Author.all
+    # byebug # comment
+    redis.set('Authors', Author.all.to_json) unless redis.get('Authors').present?
+
+    @authors = JSON.load redis.get('Authors')
+  end
+
+  def redis
+    @redis ||= Redis.new
   end
 
   # GET /authors/1

@@ -29,7 +29,7 @@ Rails.application.configure do
 
     # Uses Redis running on localhost on port 6379
     config.action_controller.perform_caching = true
-    config.cache_store = :redis_cache_store , { expires_in: 1.hour, namespace: 'cache'}
+    config.cache_store = :redis_cache_store, { expires_in: 1.hour, namespace: 'cache'}
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
