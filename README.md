@@ -1,24 +1,35 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Test the usage of caching system by Ruby 2.7.0 ,Rails 6.0.3.3
 
-Things you may want to cover:
+## Prerequesite
 
-* Ruby version
+Have Redis server installed/running locally.
 
-* System dependencies
+## Models
 
-* Configuration
+`Author` has many `Books`.
 
-* Database creation
+## Testing
 
-* Database initialization
+- Check the current caching system in Rails console
 
-* How to run the test suite
+  ```ruby
+  ActionController::Base.cache_store
+  ActionController::Base.cache_store.class
+  #=> ActiveSupport::Cache::NullStore
 
-* Services (job queues, cache servers, search engines, etc.)
+  Rails.cache
+  #=> <#ActiveSupport::Cache::RedisCacheStore options={:namespace=>nil, :compress=>true, :compress_threshold=>1024, :expires_in=>nil, :race_condition_ttl=>nil} redis=#<Redis client v4.2.2 for redis://127.0.0.1:6379/0>>
+  ```
 
-* Deployment instructions
+- Check the keys
 
-* ...
+  ```ruby
+  Rails.cache.redis.keys
+  ```
+
+- Confirm caching system working:
+  - Setup and seed database: `rails db:setup`
+  - Run `rails server`
+  - Connect to the root page and refresh browser, observe the server output to see if redundant SQL query is cached by Redis server.
