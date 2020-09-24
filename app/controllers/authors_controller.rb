@@ -4,14 +4,22 @@ class AuthorsController < ApplicationController
   # GET /authors
   # GET /authors.json
   def index
-    # @authors = Author.all
-    # byebug # comment
-    redis.set('Authors', Author.all.to_json) unless redis.get('Authors').present?
+    # authors = Author.all
+    redis.set('Authors', Author.all.to_json) if redis.get('Authors').blank? || author_counts_changed?
 
-    @authors = JSON.load redis.get('Authors')
+    authors
+  end
+
+  def authors
+    @authors ||= JSON.load(redis.get('Authors'))
+  end
+
+  def author_counts_changed?
+    Author.count != authors&.size
   end
 
   def redis
+    # Use redis locally by default
     @redis ||= Redis.new
   end
 
@@ -70,13 +78,14 @@ class AuthorsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_author
-      @author = Author.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def author_params
-      params.require(:author).permit(:name)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_author
+    @author = Author.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def author_params
+    params.require(:author).permit(:name)
+  end
 end

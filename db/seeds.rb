@@ -7,10 +7,10 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 10.times do
-  author = Author.create(name: Faker::Name.unique.name)
-  3.times { Book.create(description: Faker::Lorem.paragraph(sentence_count: 2),
-                       author: author,
-                       price: Faker::Number.number(digits: 2)) }
+  author = Author.create!(name: Faker::Name.unique.name)
+  3.times { Book.create!(description: Faker::Lorem.paragraph(sentence_count: 2),
+                         author: author,
+                         price: Faker::Number.number(digits: 2)) }
   puts "Author #{author.name} created."
 end
 
